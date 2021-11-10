@@ -82,8 +82,9 @@ def main():
         # make coFunctional random subnetworks
         # need 1000 populations where populations are the 5000 networks
         # //TODO
+        # do 1000 or 5000 times
         #coFSubnetworks = networkCreation.makeCoFSubnetworks(interactions, qNetworkBins, lociSubN)
-
+        # calculate the avg of each population -> makeCoFSubnetorks is one population
         # calculate the pvalue
         # probability edges using cof distribution is greater than avg of loci edged divided by # of random networks
         #pval = statistics.empiricalPVal(lociSubN, coFSubnetworks)
