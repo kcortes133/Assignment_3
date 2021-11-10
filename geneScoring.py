@@ -6,12 +6,9 @@
 
 # Assumption: each gene only appears once in one locus
 # genes cant be connected to themselves
-#
-
 # @param lociSubNs: List of dictionaries
-# @param lociL: list of the locis
+# @param lociLists: list of list of genes separated by loci
 # @param interactions:
-#
 # @returns geneScores:
 def getGeneScores(lociSubNs, lociL, interactions):
     geneScores = {}
@@ -45,8 +42,8 @@ def getGeneScores(lociSubNs, lociL, interactions):
 
 
 # Average the gene Score lists
-# @param geneScores: a dictionary of lists
-# @returns geneSAvg:
+# @param geneScores: a dictionary of lists of gene scores for each gene
+# @returns geneSAvg: dictionary of average gene score for each gene
 def getGeneScoreAvg(geneScores):
     geneSAvg = {}
 
@@ -55,3 +52,22 @@ def getGeneScoreAvg(geneScores):
 
     return geneSAvg
 
+# @param geneAvg: dictionary of genes and gene scores
+# @param lociLists: list of list of genes separated by loci
+# @param numGenes: number of genes to get from each loci
+# @returns genes: list of numGenes from each loci
+def getTopLociGenes(geneAvg, lociLists, numGenes):
+    genes = []
+    # account for numGenes being more than length of loci list
+    for loci in lociLists:
+        lociScores = {}
+        for gene in loci:
+            lociScores[gene] = geneAvg[gene]
+        lociSorted = sorted(lociScores, key=lambda k: lociScores[k], reverse=True)
+
+        n = numGenes
+        if numGenes > len(lociSorted):
+            n = len(lociSorted)
+        genes.extend(lociSorted[:n])
+
+    return genes

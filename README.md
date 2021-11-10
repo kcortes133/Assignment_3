@@ -1,5 +1,10 @@
 # Statistical Significance of Genetic Functional Networks Using Edge Density 
 
+## Goal
+Compute the statistical significance of a population of subnetworks from a
+set of FA loci compared to the STRING database. 
+
+## Description
 Input is two tab-delimited files named 'Input.gmt' and 'STRING.txt'. Input.gmt is a 
 tab-delimited file formatted as Broad Institute’s Gene Matrix Transformed (GMT). STRING.txt 
 is a version of the STRING database of known and predicted protein-protein interactions. 
@@ -15,23 +20,23 @@ These subnetworks are then compared for statistical significance to determine if
 chosen from the loci subnetwork are more functionally connected than a random set of genes.
 This is done by computing the empirical p-value based on the subnetworks densities.
 
-## Goal
-Compute the statistical significance of a population of subnetworks from a 
-set of FA loci compared to the STRING database. 
-
 ## Install
 scipy
 matplotlib.pyplot
 operator
 functools 
+networkx
+nxviz
 
 ## Usage
 #### Python Usage
 ```python
-import networkCreation, fileParsing, statistics
+import networkCreation, fileParsing, networkVisualization, geneScoring
 
 inputF = 'input.gmt.txt'
 stringF = 'STRING.txt'
+
+topOverallGenes = False
 
 # read in networks
 lociLists = fileParsing.readInput(inputF)
@@ -39,46 +44,46 @@ interactions = fileParsing.makeInteractionNetwork(stringF)
 network = fileParsing.makeNetwork(lociLists, interactions)
 
 # make loci subnetworks
+# make loci subnetworks
 lociSubN = networkCreation.makeLociSubnetworks(5000, network, lociLists)
 
-numBins = 128
-# make bins for coFunctional subnetwork creation
-qNetworkBins = networkCreation.makeQuantileBins(interactions, numBins)
-# fNetworkBins = makeFixedBins(interactions, numBins)
+# calculate gene scores and sort genes by score
+geneScores = geneScoring.getGeneScores(lociSubN, lociLists, network)
+geneAvg = geneScoring.getGeneScoreAvg(geneScores)
+networkSorted = sorted(geneAvg, key=lambda k: geneAvg[k], reverse=True)
 
-# make coFunctional random subnetworks
-coFSubnetworks = networkCreation.makeCoFSubnetworks(interactions, qNetworkBins, lociSubN)
+# get top numGenes from each loci
+# make network with genes
+if not topOverallGenes:
+    genes = geneScoring.getTopLociGenes(geneAvg, lociLists, 3)
+    visualNetwork = networkVisualization.makeCrossLociNetwork(genes, network, lociLists)
 
-# calculate the pvalue
-# probability edges using cof distribution is greater than avg of loci edged divided by # of random networks
-pval = statistics.empiricalPVal(lociSubN, coFSubnetworks)
+# get top numGenes regardless of loci
+# make network with genes
+if topOverallGenes:
+    genes = networkSorted[:10]
+    visualNetwork = networkVisualization.makeCrossLociNetwork(genes, network, lociLists)
 
-# make a graph showing the edge density distributions
-coFDensities = []
-for network in coFSubnetworks:
-    coFDensities.append(statistics.calcEdgeDensity(network))
-
-lociDensities = []
-for network in lociSubN:
-    lociDensities.append(statistics.calcEdgeDensity(network))
-
-statistics.overlappingHistogram(coFDensities, lociDensities)
-
-print('P-val : ', pval)
-
+# write to output file the genes loci and gene score of genes in the network
+networkVisualization.outputGeneScores(geneAvg, genes, 'topGeneScores.txt', lociLists)
+# make graph with specified genes
+# 1. gene score - size of node
+# 2. loci of gene - color of node
+# 3. weight of edge - darkness of edge
+# make network between loci genes no edges between genes in same loci
+graph = networkVisualization.makeGraph(visualNetwork, lociLists, geneAvg)
+networkVisualization.visualizeGraph(graph, args.topGenes)
 ```
 
 #### Command Line Usage
 ```commandline
 $ python main.py yourInputFile.gmt.txt
-$ python main.py Input.gmt.txt --interactions STRING.txt 
-$ python main.py yourInputFile.gmt.txt --numBins 100 --numSubnetworks 1000
+$ python main.py input.gmt.txt --topGenes=True --numGenes=10
+$ 
 ```
-#### Example Figure of Subnetwork Densities
-![pval edge densityies](https://user-images.githubusercontent.com/22487858/137910105-d4a6deab-ab47-49ea-b379-22f4956b8986.png)
+#### Example of Top Genes with Loci and Gene Score
 
-#### Example Figure of P-Val and Random Subnetwork Density Distribution
-![pval](https://user-images.githubusercontent.com/22487858/137910088-39abf6ee-49b9-40ae-99a0-4b248dac8abf.png)
+#### Example Figure of Prix Fixe subnetwork
 
 ## Input
 1. Input.gmt
@@ -93,6 +98,4 @@ $ python main.py yourInputFile.gmt.txt --numBins 100 --numSubnetworks 1000
 - weighted by strength of functional similarity
 
 ## Output 
-P-Value for edge density distribution of the subnetworks. Edge density histogram  for the two networks.
-Edge density histogram for the random subnetworks with a dashed line showing the average edge density
-for the FA loci subnetworks and the corresponding p-value.
+
