@@ -12,6 +12,16 @@ Each line in the string file represents an edge in the network between the prote
 formatted protein'\t'protein'\t'weight'\n' where weight is the strength of their functional 
 similarity. 
 
+Gene scores are calculated for each gene specified in the input file. Gene scores represent the 
+relative connectedness each gene has to other genes in different loci. These scores are calculated by
+the number of edges a gene adds to a randomly generated prix fixe subnetwork and averaged for all subnetworks.
+A prix fixe subnetwork is a network with one gene from each loci.
+
+Networks can be visualized to show either the n genes with the highest gene scores or the n genes with the highest 
+scores regardless of loci. They are visualized such that color represents loci of gene, size
+represents the gene score (bigger node means higher score), edges are from the STRING database with the darkness
+corresponding to the weight of the edge. The corresponding gene names, loci, gene scores from the visualized network 
+are the output to a specified file. 
 
 
 ## Install
@@ -75,7 +85,7 @@ $ python main.py yourInputFile.gmt.txt
 
 $ python main.py input.gmt.txt --topGenes=True --numGenes=10
 
-$ python main.py input.gmt.txt --numGenes=1
+$ python main.py input.gmt.txt --numGenes=3
 ```
 #### Example of Top Genes From Each Loci and Gene Score
 |Gene | Loci | Gene Score|
