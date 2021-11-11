@@ -102,10 +102,12 @@ $ python main.py input.gmt.txt --numGenes=1
 |TRAP1|	11|	0.5038|
 
 #### Example of Top 3 Genes from Each Loci 
-![](Network.png)
+![Network](https://user-images.githubusercontent.com/22487858/141220328-5c2013d1-fcfb-4cd9-bba6-6d5623d22dd0.png)
+
 
 #### Example Figure of Top 10 Gene Scores
-![](top 10 gene.png)
+![top 10 gene](https://user-images.githubusercontent.com/22487858/141220318-d714e8c9-b0d9-4548-9cb5-5cd77363b3e3.png)
+
 
 ## Input
 1. Input.gmt
