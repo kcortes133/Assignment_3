@@ -1,15 +1,18 @@
 # Author: Katherina Cortes
 # Date: October 28,2021
-# Purpose: Calculate gene score
+# Purpose: Calculate gene score of each gene in input file. Gene score is defined as the
+#   amount of edges it contributes to a subnetwork that consists of one gene chosen from each loci
+#   gene scores are then averaged to get one gene score. This score indicates relative connectivity to
+#   genes in other loci
 
-# gene score is number of connections to other genes as defined by input
 
+# Calculate gene scores for each gene for each subnetwork
 # Assumption: each gene only appears once in one locus
 # genes cant be connected to themselves
-# @param lociSubNs: List of dictionaries
+# @param lociSubNs: List of dictionaries of subnetworks
 # @param lociLists: list of list of genes separated by loci
-# @param interactions:
-# @returns geneScores:
+# @param interactions: dictionary of genes and their edges
+# @returns geneScores: dictionary of genes and the list of gene scores calculated from each subnetwork
 def getGeneScores(lociSubNs, lociL, interactions):
     geneScores = {}
 
@@ -22,6 +25,7 @@ def getGeneScores(lociSubNs, lociL, interactions):
                 if lociGene in l:
                     loci = l
                     break
+
             # get all the genes in the specified loci
             for gene in loci:
                 # get number of connections in the subNetwork with chosen gene
@@ -41,17 +45,20 @@ def getGeneScores(lociSubNs, lociL, interactions):
     return geneScores
 
 
-# Average the gene Score lists
+# Average the gene Score lists to get one score for each gene
+#
 # @param geneScores: a dictionary of lists of gene scores for each gene
 # @returns geneSAvg: dictionary of average gene score for each gene
 def getGeneScoreAvg(geneScores):
     geneSAvg = {}
-
     for gene in geneScores:
         geneSAvg[gene] = sum(geneScores[gene])/len(geneScores[gene])
-
     return geneSAvg
 
+
+# Get the genes with the highest gene scores from each loci. Number of genes defined
+# by numGenes
+#
 # @param geneAvg: dictionary of genes and gene scores
 # @param lociLists: list of list of genes separated by loci
 # @param numGenes: number of genes to get from each loci

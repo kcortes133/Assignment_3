@@ -47,7 +47,7 @@ def overlappingHistogram(dens1, dens2):
 # @param lociSubN: list of loci subnetworks dictionaries
 # @param coFSubN: list of cofunctional subnetworks dictionaries
 # @returns pval: int pval for loci subnetworks with cofunctional subnetworks as null hypothesis
-def empiricalPVal(lociSubN, coFSubN):
+def empiricalPVal(lociSubN, coFPopDensities):
     # use avg density of final population in random trial
     # P value representing fraction of random trials producing final pop of subnetworks
     # with higher avg density than the avg density seen with true loci inputs
@@ -61,13 +61,13 @@ def empiricalPVal(lociSubN, coFSubN):
     lociDensity = lociDensity/len(lociSubN)
 
     # get network densities for all coF subnetworks
-    coFDensities = []
-    for coF in coFSubN:
-        coFDensities.append(calcEdgeDensity(coF))
+    #coFDensities = []
+    #for coF in coFSubN:
+    #    coFDensities.append(calcEdgeDensity(coF))
 
     # calculate p-val by using cof (null analysis) density distribution
     # and avg loci density
-    coFDensities = sorted(coFDensities)
+    coFDensities = sorted(coFPopDensities)
     pos = 0
     densPos = 0
     for c in coFDensities:

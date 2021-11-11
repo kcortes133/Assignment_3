@@ -52,12 +52,6 @@ def main():
     geneAvg = geneScoring.getGeneScoreAvg(geneScores)
     networkSorted = sorted(geneAvg, key=lambda k: geneAvg[k], reverse=True)
 
-    count = 0
-    for n in geneAvg:
-        if geneAvg[n] == 0:
-            count += 1
-    print(count)
-
     # get top numGenes from each loci
     # make network with genes
     if not args.topGenes:
@@ -83,29 +77,35 @@ def main():
     if args.calcPVal:
         numBins = args.numBins
         # make bins for coFunctional subnetwork creation
-        #qNetworkBins = networkCreation.makeQuantileBins(interactions, numBins)
-        # fNetworkBins = makeFixedBins(interactions, numBins)
+        qNetworkBins = networkCreation.makeQuantileBins(interactions, numBins)
+        fNetworkBins = networkCreation.makeFixedBins(interactions, numBins)
         # make coFunctional random subnetworks
         # need 1000 populations where populations are the 5000 networks
-        # //TODO
         # do 1000 or 5000 times
-        #coFSubnetworks = networkCreation.makeCoFSubnetworks(interactions, qNetworkBins, lociSubN)
+        coFPopDensities = []
+        for i in range(5000):
+            coFSubnetworks = networkCreation.makeCoFSubnetworks(interactions, qNetworkBins, lociSubN)
+            popD = 0
+            for subCoF in coFSubnetworks:
+                popD += statistics.calcEdgeDensity(subCoF)
+            coFPopDensities.append(popD/5000)
+
         # calculate the avg of each population -> makeCoFSubnetorks is one population?
         ''
         # calculate the pvalue
         # probability edges using cof distribution is greater than avg of loci edged divided by # of random networks
-        #pval = statistics.empiricalPVal(lociSubN, coFSubnetworks)
+        pval = statistics.empiricalPVal(lociSubN, coFSubnetworks)
 
         # make a graph showing the edge density distributions
-        #coFDensities = []
-        #for network in coFSubnetworks:
-        #    coFDensities.append(statistics.calcEdgeDensity(network))
+        coFDensities = []
+        for network in coFSubnetworks:
+            coFDensities.append(statistics.calcEdgeDensity(network))
 
-        #lociDensities = []
-        #for network in lociSubN:
-        #    lociDensities.append(statistics.calcEdgeDensity(network))
+        lociDensities = []
+        for network in lociSubN:
+            lociDensities.append(statistics.calcEdgeDensity(network))
 
-        #statistics.overlappingHistogram(coFDensities, lociDensities)
+        statistics.overlappingHistogram(coFPopDensities, lociDensities)
 
         #print('P-val : ', pval)
 

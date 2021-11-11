@@ -1,7 +1,8 @@
 # Gene Score and Prix Fixe Subnetwork Visualization
 
 ## Goal
-Calculate gene scores for each gene to determine 
+Calculate gene scores for each gene to determine strength of relationships between other loci genes
+and then visualize the top genes with corresponding edges, loci, gene score.
 
 ## Description
 Input is two tab-delimited files named 'Input.gmt' and 'STRING.txt'. Input.gmt is a 
@@ -10,6 +11,7 @@ is a version of the STRING database of known and predicted protein-protein inter
 Each line in the string file represents an edge in the network between the protein genes 
 formatted protein'\t'protein'\t'weight'\n' where weight is the strength of their functional 
 similarity. 
+
 
 
 ## Install
@@ -75,7 +77,7 @@ $ python main.py input.gmt.txt --topGenes=True --numGenes=10
 
 $ python main.py input.gmt.txt --numGenes=1
 ```
-#### Example of Top Genes with Loci and Gene Score
+#### Example of Top Genes From Each Loci and Gene Score
 |Gene | Loci | Gene Score|
 |-----|-----|------|
 |PLK1|	0|	0.495|
@@ -90,6 +92,21 @@ $ python main.py input.gmt.txt --numGenes=1
 |ERCC4|	9|	0.4646|
 |CIB1|	10|	0.3766|
 |TRAP1|	11|	0.5038|
+
+#### Example of Top 10 Genes Regardless of Loci
+|Gene	|Loci	|Gene Score|
+|----|----|----|
+|MAPK14	|7	|0.7866|
+|MAPK13|	7	|0.7146|
+|STK38	|7	|0.5986|
+|CDK18|	5| 0.5862|
+|TRAP1|	11|	0.5038|
+|PLK1	|0|	0.495|
+|ERCC4|	9|	0.4646|
+|SMG1	|9|	0.4488|
+|NCBP1|	3|	0.4428|
+|CHP2	|0|	0.4108|
+
 
 #### Example of Top 3 Genes from Each Loci 
 ![Network](https://user-images.githubusercontent.com/22487858/141220328-5c2013d1-fcfb-4cd9-bba6-6d5623d22dd0.png)

@@ -71,7 +71,6 @@ def makeGraph(network, lociLists, geneVals):
 # @param topGenes: bool where True gives loci legend
 # @displays: nxviz circos graph
 def visualizeGraph(G, topGenes):
-
     nxviz.circos(G, group_by='class', node_color_by='class', node_size_by='value', edge_alpha_by='weight')
 
     if topGenes:
