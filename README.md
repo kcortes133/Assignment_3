@@ -129,4 +129,9 @@ $ python main.py input.gmt.txt --numGenes=1
 - weighted by strength of functional similarity
 
 ## Output 
-
+1. Graph network visualization
+- Colors correspond to gene loci
+- Edge darkness corresponds to edge weight from STRING database
+- Node size corresponds to gene score
+3. Tab Delimited File of genes, loci and corresponding gene scores
+- gives the top genes from each loci or top genes regardless of loci
