@@ -1,6 +1,7 @@
-# Statistical Significance of Genetic Functional Networks Using Edge Density 
+# Gene Score and Prix Fixe Subnetwork Visualization
 
 ## Goal
+Calculate gene scores for each gene to determine 
 Compute the statistical significance of a population of subnetworks from a
 set of FA loci compared to the STRING database. 
 
@@ -21,12 +22,12 @@ chosen from the loci subnetwork are more functionally connected than a random se
 This is done by computing the empirical p-value based on the subnetworks densities.
 
 ## Install
-scipy
-matplotlib.pyplot
-operator
-functools 
-networkx
-nxviz
+- scipy
+- matplotlib.pyplot
+- operator
+- functools 
+- networkx
+- nxviz
 
 ## Usage
 #### Python Usage
@@ -72,18 +73,39 @@ networkVisualization.outputGeneScores(geneAvg, genes, 'topGeneScores.txt', lociL
 # 3. weight of edge - darkness of edge
 # make network between loci genes no edges between genes in same loci
 graph = networkVisualization.makeGraph(visualNetwork, lociLists, geneAvg)
-networkVisualization.visualizeGraph(graph, args.topGenes)
+networkVisualization.visualizeGraph(graph, 3)
 ```
 
 #### Command Line Usage
 ```commandline
+
 $ python main.py yourInputFile.gmt.txt
+
 $ python main.py input.gmt.txt --topGenes=True --numGenes=10
-$ 
+
+$ python main.py input.gmt.txt --numGenes=1
 ```
 #### Example of Top Genes with Loci and Gene Score
+|Gene | Loci | Gene Score|
+|-----|-----|------|
+|PLK1|	0|	0.495|
+|LGR4|	1|	0.299|
+|RAD51C|	2|	0.3502|
+|NCBP1|	3|	0.4428|
+|FANCA|	4|	0.101|
+|CDK18|	5|	0.5862|
+|IRAK2|	6|	0.3686|
+|MAPK14|	7|	0.7866|
+|DCLK1|	8|	0.3726|
+|ERCC4|	9|	0.4646|
+|CIB1|	10|	0.3766|
+|TRAP1|	11|	0.5038|
 
-#### Example Figure of Prix Fixe subnetwork
+#### Example of Top 3 Genes from Each Loci 
+![](Network.png)
+
+#### Example Figure of Top 10 Gene Scores
+![](top 10 gene.png)
 
 ## Input
 1. Input.gmt

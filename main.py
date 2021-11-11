@@ -52,6 +52,12 @@ def main():
     geneAvg = geneScoring.getGeneScoreAvg(geneScores)
     networkSorted = sorted(geneAvg, key=lambda k: geneAvg[k], reverse=True)
 
+    count = 0
+    for n in geneAvg:
+        if geneAvg[n] == 0:
+            count += 1
+    print(count)
+
     # get top numGenes from each loci
     # make network with genes
     if not args.topGenes:
@@ -84,7 +90,8 @@ def main():
         # //TODO
         # do 1000 or 5000 times
         #coFSubnetworks = networkCreation.makeCoFSubnetworks(interactions, qNetworkBins, lociSubN)
-        # calculate the avg of each population -> makeCoFSubnetorks is one population
+        # calculate the avg of each population -> makeCoFSubnetorks is one population?
+        ''
         # calculate the pvalue
         # probability edges using cof distribution is greater than avg of loci edged divided by # of random networks
         #pval = statistics.empiricalPVal(lociSubN, coFSubnetworks)
