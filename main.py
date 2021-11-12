@@ -51,20 +51,6 @@ def main():
     geneAvg = geneScoring.getGeneScoreAvg(geneScores)
     networkSorted = sorted(geneAvg, key=lambda k: geneAvg[k], reverse=True)
 
-    c = 0
-    print(len(network))
-    for j in network:
-        if len(network[j] ) > 0:
-            c+=1
-    print(c)
-
-    count = 0
-    for n in geneScores:
-        if max(geneScores[n]) > 0:
-            count+=1
-    print(count)
-
-
     # get top numGenes from each loci
     # make network with genes
     if not args.topGenes:
