@@ -57,7 +57,6 @@ def readInput(fileIn, asLoci=True):
 #   @param   stringFile STRING file of protein-protein interactions
 #            organized as protein'\t'protein'\t'weight'\n'
 #   @returns interactions dict of protein interactions
-
 def makeInteractionNetwork(stringFile):
     # dictionary of dictionary 1st protein : 2nd protein: weight
     interactions = {}

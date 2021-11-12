@@ -9,7 +9,6 @@
 
 import networkx as nx
 import matplotlib.pyplot as plt
-
 import nxviz
 from nxviz import annotate
 from nxviz.plots import despine, aspect_equal
@@ -98,4 +97,3 @@ def outputGeneScores(geneAvg, genes, outFile, lociLists):
                     break
             f.write(gene + '\t' + str(loci) + '\t' + str(geneAvg[gene]) +'\n')
     return
-
